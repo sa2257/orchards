@@ -37,12 +37,36 @@ datalog = 'moistdata.log'
 command3 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
                                          script_name, os.getcwd(), datadir, datalog)
 
+
+script_name = 'temperature_sensor.py'
+datadir = 'data_today'
+datalog = 'tempdata.log'
+command4 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
+
+
+script_name = 'humidity_sensor.py'
+datadir = 'data_today'
+datalog = 'humdata.log'
+command5 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
+
+
+script_name = 'pressure_sensor.py'
+datadir = 'data_today'
+datalog = 'presdata.log'
+command6 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
+
 # create jobs
 start_job0 = cron.new(command=command0)
 start_job1 = cron.new(command=command1)
 sense_job1 = cron.new(command=command1)
 sense_job2 = cron.new(command=command2)
 sense_job3 = cron.new(command=command3)
+sense_job4 = cron.new(command=command4)
+sense_job5 = cron.new(command=command5)
+sense_job6 = cron.new(command=command6)
 
 # assign schedule
 start_job0.every_reboot()
@@ -52,6 +76,9 @@ sense_frequency = 1
 sense_job1.minute.every(sense_frequency)
 sense_job2.minute.every(sense_frequency)
 sense_job3.minute.every(sense_frequency)
+sense_job4.minute.every(sense_frequency)
+sense_job5.minute.every(sense_frequency)
+sense_job6.minute.every(sense_frequency)
 
 # Clean existing jobs
 # cron.write('output.tab')

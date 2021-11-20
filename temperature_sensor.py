@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import time
 import sys
 
 
@@ -36,19 +35,20 @@ def gpio_read():
 
 
 def grove_read():
-    from grove_helper import SlotHelper
-    from grove_light_sensor_v1_2 import GroveLightSensor
-    sh = SlotHelper(SlotHelper.ADC)
-    pin = sh.argv2pin()
+    from bme_280_sensor import readBME280All
 
-    sensor = GroveLightSensor(pin)
-
-    print('Detecting light...')
-    while True:
-        print('Light value: {0}'.format(sensor.light))
-        time.sleep(1)
+    try:
+        temperature, pressure, humidity = readBME280All()
+    except:
+        print('Error finding temperature sensor!')
+        return -1
+    else:
+        #print('Detecting temperature...')
+        return temperature
 
 
 if __name__ == '__main__':
-    grove_read()
+    sensor_value = grove_read()
+    tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
+    print(tempdata_string)
     sys.exit()
