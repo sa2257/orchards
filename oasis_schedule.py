@@ -16,8 +16,13 @@ local_python = 'python'
 
 script_name = 'welcome.py'
 syslog = 'sysout.log'
-command0 = '{} {}/{} >> {}/{}'.format(local_python, os.getcwd(),
-                                      script_name, os.getcwd(), syslog)
+boot1 = '{} {}/{} >> {}/{}'.format(local_python, os.getcwd(),
+                                   script_name, os.getcwd(), syslog)
+
+script_name = 'orchards_time.py'
+syslog = 'sysout.log'
+boot2 = '{} {}/{} >> {}/{}'.format(local_python, os.getcwd(),
+                                   script_name, os.getcwd(), syslog)
 
 script_name = 'orchards_time.py'
 datadir = 'data_today'
@@ -59,8 +64,8 @@ command6 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
                                          script_name, os.getcwd(), datadir, datalog)
 
 # create jobs
-start_job0 = cron.new(command=command0)
-start_job1 = cron.new(command=command1)
+start_job0 = cron.new(command=boot1)
+start_job1 = cron.new(command=boot2)
 sense_job1 = cron.new(command=command1)
 sense_job2 = cron.new(command=command2)
 sense_job3 = cron.new(command=command3)
