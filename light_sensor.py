@@ -6,8 +6,8 @@ import time
 
 def read_sensor():
     from grove_light_sensor_v1_2 import GroveLightSensor
-    # connect to analog pin 2(slot A2)
-    pin = 2
+    # connect to analog pin 0(slot A0)
+    pin = 0
     try:
         sensor = GroveLightSensor(pin)
     except:
@@ -21,7 +21,7 @@ def read_sensor():
 
 
 def grove_read():
-    from grove_helper import SlotHelper
+    from helper import SlotHelper
     from grove_light_sensor_v1_2 import GroveLightSensor
     sh = SlotHelper(SlotHelper.ADC)
     pin = sh.argv2pin()
