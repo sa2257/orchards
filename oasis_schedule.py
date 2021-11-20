@@ -13,16 +13,25 @@ cron = CronTab(user=True)
 
 # create commands
 filename = 'sysout.log'
-command = 'echo hello_world >> {}/{}'.format(os.getcwd(), filename)
+command = 'echo hello_orchards >> {}/{}'.format(os.getcwd(), filename)
 command2 = 'pwd >> {}/{}'.format(os.getcwd(), filename)
+
+local_python = 'python'
+script_name = 'orchards_time.py'
+datadir = 'data_today'
+datalog = 'timestamp.log'
+command3 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
 
 # create jobs
 job = cron.new(command=command)
 job2 = cron.new(command=command2)
+job3 = cron.new(command=command3)
 
 # assign schedule
 job.minute.every(1)
 job2.minute.every(1)
+job3.minute.every(1)
 # The job takes place once every 5 minutes
 # job.minute.every(5)
 
