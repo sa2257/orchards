@@ -5,7 +5,7 @@ from crontab import CronTab
 
 # Creating an object from the class
 # Using the root user
-cron = CronTab(user="sachille")
+cron = CronTab(user="raspberry")
 
 # Using the current user
 #my_cron = CronTab(user=True)
@@ -30,9 +30,10 @@ cron = CronTab(user="sachille")
 # job.clear()
 
 # cron.write()
-
+filename = 'sysout.log'
+command = 'echo hello_world > {}/{}'.format(os.getcwd(), filename)
 job = cron.new(
-    command='echo hello_world > /Users/Shared/workspace/zerzura/oasis/sysout.log')
+    command='')
 # job2 = cron.new(
 #    command='pwd >> /Users/Shared/workspace/zerzura/oasis/sysout.log')
 job.minute.every(1)
