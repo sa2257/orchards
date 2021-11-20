@@ -12,37 +12,46 @@ from crontab import CronTab
 cron = CronTab(user=True)
 
 # create commands
-filename = 'sysout.log'
-command = 'echo hello_orchards >> {}/{}'.format(os.getcwd(), filename)
-command2 = 'pwd >> {}/{}'.format(os.getcwd(), filename)
-
 local_python = 'python'
+
+script_name = 'welcome.py'
+syslog = 'sysout.log'
+command0 = '{} {}/{} >> {}/{}'.format(local_python, os.getcwd(),
+                                      script_name, os.getcwd(), syslog)
+
 script_name = 'orchards_time.py'
 datadir = 'data_today'
 datalog = 'timestamp.log'
+command1 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
+
+script_name = 'light_sensor.py'
+datadir = 'data_today'
+datalog = 'lightdata.log'
+command2 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                         script_name, os.getcwd(), datadir, datalog)
+
+script_name = 'moisture_sensor.py'
+datadir = 'data_today'
+datalog = 'moistdata.log'
 command3 = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
                                          script_name, os.getcwd(), datadir, datalog)
 
 # create jobs
-job = cron.new(command=command)
-job2 = cron.new(command=command2)
-job3 = cron.new(command=command3)
+start_job0 = cron.new(command=command0)
+start_job1 = cron.new(command=command1)
+sense_job1 = cron.new(command=command1)
+sense_job2 = cron.new(command=command2)
+sense_job3 = cron.new(command=command3)
 
 # assign schedule
-job.minute.every(1)
-job2.minute.every(1)
-job3.minute.every(1)
-# The job takes place once every 5 minutes
-# job.minute.every(5)
+start_job0.every_reboot()
+start_job1.every_reboot()
 
-# The job takes place once every four hours
-# job.hour.every(4)
-
-# The job takes place on the 4th, 5th, and 6th day of the week.
-#job.day.on(4, 5, 6)
-
-# Clearing the restrictions of a job
-# job.clear()
+sense_frequency = 1
+sense_job1.minute.every(sense_frequency)
+sense_job2.minute.every(sense_frequency)
+sense_job3.minute.every(sense_frequency)
 
 # Clean existing jobs
 # cron.write('output.tab')
