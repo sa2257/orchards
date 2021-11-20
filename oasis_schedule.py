@@ -6,19 +6,23 @@ from crontab import CronTab
 
 # Creating an object from the class
 # Using the root user
-cron = CronTab(user="pi")
+# cron = CronTab(user="pi")
 
+# Optional: Using the current user
+cron = CronTab(user=True)
 
-# Using the current user
-#my_cron = CronTab(user=True)
+# create commands
+filename = 'sysout.log'
+command = 'echo hello_world >> {}/{}'.format(os.getcwd(), filename)
+command2 = 'pwd >> {}/{}'.format(os.getcwd(), filename)
 
-# Creating an object from the class into a file
-#file_cron = CronTab(tabfile="filename.tab")
+# create jobs
+job = cron.new(command=command)
+job2 = cron.new(command=command2)
 
-# Creating a new job
-#job = cron.new(command='echo hello_world')
-
-# Setting up restrictions for the job
+# assign schedule
+job.minute.every(1)
+job2.minute.every(1)
 # The job takes place once every 5 minutes
 # job.minute.every(5)
 
@@ -31,14 +35,11 @@ cron = CronTab(user="pi")
 # Clearing the restrictions of a job
 # job.clear()
 
-# cron.write()
-filename = 'sysout.log'
-command = 'echo hello_world >> {}/{}'.format(os.getcwd(), filename)
-job = cron.new(
-    command=command)
-command2 = 'pwd >> {}/{}'.format(os.getcwd(), filename)
-job2 = cron.new(
-    command=command2)
-job.minute.every(1)
-job2.minute.every(1)
+# Clean existing jobs
+# cron.write('output.tab')
+# cron.remove_all()
+# cron.remove(job)
+# cron.remove(job2)
+
+# clean and write to cron table
 cron.write()
