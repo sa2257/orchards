@@ -1,11 +1,13 @@
 # Read user directives and app names txt files and generate a crontab file
 
 # Importing the CronTab class from the module
+import os
 from crontab import CronTab
 
 # Creating an object from the class
 # Using the root user
-cron = CronTab(user="raspberry")
+cron = CronTab(user="pi")
+
 
 # Using the current user
 #my_cron = CronTab(user=True)
@@ -31,11 +33,12 @@ cron = CronTab(user="raspberry")
 
 # cron.write()
 filename = 'sysout.log'
-command = 'echo hello_world > {}/{}'.format(os.getcwd(), filename)
+command = 'echo hello_world >> {}/{}'.format(os.getcwd(), filename)
 job = cron.new(
-    command='')
-# job2 = cron.new(
-#    command='pwd >> /Users/Shared/workspace/zerzura/oasis/sysout.log')
+    command=command)
+command2 = 'pwd >> {}/{}'.format(os.getcwd(), filename)
+job2 = cron.new(
+    command=command2)
 job.minute.every(1)
-# job2.minute.every(1)
+job2.minute.every(1)
 cron.write()
