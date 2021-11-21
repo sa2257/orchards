@@ -2,6 +2,7 @@
 
 # importing libraries
 import os
+import sys
 from orchards_time import date_today
 
 
@@ -15,13 +16,17 @@ def create_folder():
         # generating date in format
         date = date_today()
         folder_name = node_name+"-{}".format(date)
-
-        print("Creating folder {}".format(folder_name))
-
-        # creating directories
-        os.replace(base_folder, folder_name)
+        isdir = os.path.isdir(folder_name)
+        if isdir:
+            print("Folder {} already exists!".format(folder_name))
+            return -1
+        else:
+            print("Creating folder {}".format(folder_name))
+            # creating directories
+            os.replace(base_folder, folder_name)
 
     os.mkdir(base_folder)
+    return 0
 
 
 def delete_folder(folder_name):
@@ -31,3 +36,4 @@ def delete_folder(folder_name):
 # Main function
 if __name__ == "__main__":
     create_folder()
+    sys.exit()
