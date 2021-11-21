@@ -4,6 +4,7 @@
 import os
 import sys
 from crontab import CronTab
+from sentinel_monitor import check_liveness, check_diffness
 
 # Creating an object from the class
 # Using the root user
@@ -14,6 +15,50 @@ cron = CronTab(user=True)
 
 # create commands
 local_python = 'python'
+sensor_list = ['time', 'light', 'moist', 'temp', 'hum', 'pres']
+
+
+def remove_command(command):
+    grep_tab = cron.find_command(command)
+    for item in grep_tab:
+        cron.remove(item)
+
+
+def reschedule_command(command, frequency):
+    grep_tab = cron.find_command(command)
+    for item in grep_tab:
+        # assign new schedule
+        if frequency == -1:
+            item.every_reboot()
+        else:
+            item.minute.every(frequency)
+
+
+def disable_command(command):
+    grep_tab = cron.find_command(command)
+    for item in grep_tab:
+        if item.is_enabled():
+            item.enable(False)
+
+
+def enable_command(command):
+    grep_tab = cron.find_command(command)
+    for item in grep_tab:
+        if not item.is_enabled():
+            item.enable()
+
+
+def toggle_command(command):
+    # https://stackoverflow.com/questions/62741775/python-crontab-find-existing-cron-jobs-is-giving-wrong-result
+
+    grep_tab = cron.find_command(command)
+    # for item in cron:
+    for item in grep_tab:
+        print(item)
+        if item.is_enabled():
+            item.enable(False)
+        else:
+            item.enable()
 
 
 def create_commands():
@@ -85,6 +130,9 @@ def create_commands():
 
 
 def run_orchards(option):
+    # Clean existing jobs
+    cron.remove_all()
+
     boot, heart, sense = create_commands()
 
     boot_job = [None] * len(boot)
@@ -108,21 +156,34 @@ def run_orchards(option):
             sense_job[i] = cron.new(command=each)
             sense_job[i].minute.every(sense_frequency)
 
-    # Clean existing jobs
-    # cron.write('output.tab')
-    # cron.remove_all()
-    # cron.remove(job)
-    # cron.remove(job2)
-
     # clean and write to cron table
     cron.write()
+    # cron.write('output.tab') # if want to maintain copy
 
 
 def run_aware(option):
+    # check for sensors from time to time and run
+    boot, heart, sense = create_commands()
+
+    for i, each in enumerate(sensor_list):
+        if check_diffness(each):
+            enable_command(sense[i])
+        else:
+            disable_command(sense[i])
+
     cron.write()
 
 
 def run_live(option):
+    # check if sensors are alive and only run if
+    boot, heart, sense = create_commands()
+
+    for i, each in enumerate(sensor_list):
+        if check_liveness(each):
+            enable_command(sense[i])
+        else:
+            disable_command(sense[i])
+
     cron.write()
 
 
