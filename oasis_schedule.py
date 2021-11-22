@@ -29,10 +29,11 @@ def reschedule_command(command, frequency):
     grep_tab = cron.find_command(command)
     for item in grep_tab:
         # assign new schedule
-        if frequency == -1:
+        if frequency == '-1':
             item.every_reboot()
         else:
-            item.minute.every(frequency)
+            # item.minute.every(frequency)
+            item.setall(frequency)
 
 
 def disable_command(command):
@@ -146,16 +147,16 @@ def run_orchards(option):
             # assign schedule
             boot_job[i].every_reboot()
 
-    sense_frequency = 1
+    sense_frequency = '* * * * *'
     if(option > 0):
         for i, each in enumerate(heart):
             heart_job[i] = cron.new(command=each)
-            heart_job[i].minute.every(sense_frequency)
+            heart_job[i].setall(sense_frequency)
 
     if(option > 1):
         for i, each in enumerate(sense):
             sense_job[i] = cron.new(command=each)
-            sense_job[i].minute.every(sense_frequency)
+            sense_job[i].setall(sense_frequency)
 
     # clean and write to cron table
     cron.write()
@@ -180,10 +181,12 @@ def run_live(option):
     boot, heart, sense = create_commands()
 
     for i, each in enumerate(sensor_list):
-        if check_liveness(each):
+        switch, policy = check_liveness(each)
+        if switch:
             enable_command(sense[i])
+            # disable_command(sense[i])
         else:
-            disable_command(sense[i])
+            reschedule_command(sense[i], policy)
 
     cron.write()
 
