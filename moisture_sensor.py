@@ -12,7 +12,7 @@ def grove_read():
     try:
         sensor = GroveMoistureSensor(pin)
     except:
-        print('Error finding moisture sensor!')
+        #print('Error finding moisture sensor!')
         return -1
     else:
         #print('Detecting moisture...')

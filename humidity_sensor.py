@@ -10,7 +10,7 @@ def grove_read():
     try:
         temperature, pressure, humidity = readBME280All()
     except:
-        print('Error finding humidity sensor!')
+        #print('Error finding humidity sensor!')
         return -1
     else:
         #print('Detecting humidity...')

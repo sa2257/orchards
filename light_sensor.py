@@ -13,7 +13,7 @@ def grove_read():
     try:
         sensor = GroveLightSensor(pin)
     except:
-        print('Error finding light sensor!')
+        #print('Error finding light sensor!')
         return -1
     else:
         #print('Detecting light...')

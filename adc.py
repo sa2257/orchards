@@ -7,11 +7,11 @@ __all__ = [
     "RPI_HAT_PID", "RPI_ZERO_HAT_PID"
 ]
 
-RPI_HAT_PID      = 0x0004
+RPI_HAT_PID = 0x0004
 RPI_ZERO_HAT_PID = 0x0005
-RPI_HAT_NAME     = 'Grove Base Hat RPi'
+RPI_HAT_NAME = 'Grove Base Hat RPi'
 """ The HAT name to compare with return value of :class:`ADC.name` """
-RPI_ZERO_HAT_NAME= 'Grove Base Hat RPi Zero'
+RPI_ZERO_HAT_NAME = 'Grove Base Hat RPi Zero'
 """ The HAT name to compare with return value of :class:`ADC.name` """
 
 
@@ -21,7 +21,8 @@ class ADC(object):
     Args:
         address(int): optional, i2c address of the ADC unit, default 0x04
     '''
-    def __init__(self, address = 0x04):
+
+    def __init__(self, address=0x04):
         self.address = address
         self.bus = i2c.Bus()
 
@@ -87,7 +88,7 @@ class ADC(object):
         '''
         Read the ADC Core (through I2C) registers
         Grove Base Hat for RPI I2C Registers
-            - 0x00 ~ 0x01: 
+            - 0x00 ~ 0x01:
             - 0x10 ~ 0x17: ADC raw data
             - 0x20 ~ 0x27: input voltage
             - 0x29: output voltage (Grove power supply voltage)
@@ -101,10 +102,10 @@ class ADC(object):
             self.bus.write_byte(self.address, n)
             return self.bus.read_word_data(self.address, n)
         except IOError:
-            print("Check whether I2C enabled and   {}  or  {}  inserted".format \
-                    (RPI_HAT_NAME, RPI_ZERO_HAT_NAME))
-            sys.exit(2)
-            return 0
+            # print("Check whether I2C enabled and   {}  or  {}  inserted".format \
+            #        (RPI_HAT_NAME, RPI_ZERO_HAT_NAME))
+            # sys.exit(2)
+            return -1
 
 
 if __name__ == '__main__':
