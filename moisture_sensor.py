@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+# https://en.wikipedia.org/wiki/Water_content#Soil_moisture_measurement sunction pressure
 
 
 def grove_read():
@@ -19,6 +20,6 @@ def grove_read():
 
 if __name__ == '__main__':
     sensor_value = grove_read()
-    moistdata_string = 'Moisture value: {0}'.format(sensor_value)
+    moistdata_string = 'Moisture value: {0} (-)kPa'.format(sensor_value)
     print(moistdata_string)
     sys.exit()
