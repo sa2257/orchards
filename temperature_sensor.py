@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+from orchards_time import time_now
 
 
 def gpio_read():
@@ -49,6 +50,7 @@ def grove_read():
 
 if __name__ == '__main__':
     sensor_value = grove_read()
-    tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
+    #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
+    tempdata_string = '{},{0}'.format(time_now(), sensor_value)
     print(tempdata_string)
     sys.exit()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+from orchards_time import time_now
 
 
 def grove_read():
@@ -18,6 +19,7 @@ def grove_read():
 
 if __name__ == '__main__':
     sensor_value = grove_read()
-    presdata_string = 'Pressure value: {0} hPa'.format(sensor_value)
+    #presdata_string = 'Pressure value: {0} hPa'.format(sensor_value)
+    presdata_string = '{},{0}'.format(time_now(), sensor_value)
     print(presdata_string)
     sys.exit()

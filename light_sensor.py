@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+from orchards_time import time_now
 # https://www.seeedstudio.com/blog/2020/01/08/what-is-a-light-sensor-types-uses-arduino-guide/
 # https://docs.microsoft.com/en-us/windows/win32/sensorsapi/understanding-and-interpreting-lux-values
 
@@ -21,6 +22,7 @@ def grove_read():
 
 if __name__ == '__main__':
     sensor_value = grove_read()
-    lightdata_string = 'Light value: {0} lux'.format(sensor_value)
+    #tempdata_string = 'Light value: {0} lux'.format(sensor_value)
+    tempdata_string = '{},{0}'.format(time_now(), sensor_value)
     print(lightdata_string)
     sys.exit()
