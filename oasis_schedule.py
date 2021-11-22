@@ -5,7 +5,7 @@ import os
 import sys
 from crontab import CronTab
 # https://pypi.org/project/python-crontab/
-from sentinel_monitor import check_liveness, check_diffness
+from sentinel_monitor import monitor_liveness
 
 # Creating an object from the class
 # Using the root user
@@ -34,6 +34,14 @@ def reschedule_command(command, frequency):
         else:
             # item.minute.every(frequency)
             item.setall(frequency)
+
+
+def is_Able(command):
+    grep_tab = cron.find_command(command)
+    for item in grep_tab:
+        if item.is_enabled():
+            return True
+    return False
 
 
 def disable_command(command):
@@ -181,12 +189,14 @@ def run_live(option):
     boot, heart, sense = create_commands()
 
     for i, each in enumerate(sensor_list):
-        switch, policy = check_liveness(each)
+        isAble = is_Able(sense[i])
+        switch, policy = monitor_liveness(each, isAble)
         if switch:
-            enable_command(sense[i])
-            # disable_command(sense[i])
-        else:
+            toggle_command(sense[i])
+        elif policy is not None:
             reschedule_command(sense[i], policy)
+        else:
+            pass
 
     cron.write()
 
