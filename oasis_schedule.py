@@ -16,7 +16,7 @@ cron = CronTab(user=True)
 
 # create commands
 local_python = 'python'
-sensor_list = ['time', 'light', 'moist', 'temp', 'hum', 'pres']
+sensor_list = ['light', 'moist', 'temp', 'hum', 'pres']
 
 
 def remove_command(command):
@@ -90,7 +90,7 @@ def create_commands():
     datalog = 'timestamp.log'
     command = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
                                             script_name, os.getcwd(), datadir, datalog)
-    sense.append(command)
+    heart.append(command)
 
     script_name = 'light_sensor.py'
     datadir = 'data_today'

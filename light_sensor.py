@@ -22,7 +22,7 @@ def grove_read():
 
 if __name__ == '__main__':
     sensor_value = grove_read()
-    #tempdata_string = 'Light value: {0} lux'.format(sensor_value)
-    tempdata_string = '{},{}'.format(time_now(), sensor_value)
+    lightdata_string = 'Light value: {0} lux'.format(sensor_value)
+    lightdata_string = '{},{}'.format(time_now(), sensor_value)
     print(lightdata_string)
     sys.exit()
