@@ -168,7 +168,7 @@ def run_aware(option):
 
     for i, each in enumerate(sensor_list):
         if check_diffness(each):
-            enable_command(sense[i])
+            enable_command(sense[i])  # need a sophisticated command
         else:
             disable_command(sense[i])
 

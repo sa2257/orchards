@@ -12,7 +12,7 @@ def read_data(datafile):
     with open(datafile, 'r') as f:
         rows = csv.reader(f)
         data = []
-        for row in rows:
+        for row in rows:  # reversed didn't work, no did len
             data.append(float(row[1]))
         try:
             avg = sum(data) / len(data)
@@ -26,7 +26,7 @@ def read_item(datafile):
         rows = csv.reader(f)
         data = 0
         for row in rows:
-            data = float(row[1])
+            data = float(row[1])  # len and [][] didn't work
         return data
 
 
