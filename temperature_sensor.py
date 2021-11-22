@@ -51,6 +51,6 @@ def grove_read():
 if __name__ == '__main__':
     sensor_value = grove_read()
     #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
-    tempdata_string = '{},{0}'.format(time_now(), sensor_value)
+    tempdata_string = '{},{}'.format(time_now(), sensor_value)
     print(tempdata_string)
     sys.exit()

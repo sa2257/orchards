@@ -20,6 +20,6 @@ def grove_read():
 if __name__ == '__main__':
     sensor_value = grove_read()
     #presdata_string = 'Pressure value: {0} hPa'.format(sensor_value)
-    presdata_string = '{},{0}'.format(time_now(), sensor_value)
+    presdata_string = '{},{}'.format(time_now(), sensor_value)
     print(presdata_string)
     sys.exit()

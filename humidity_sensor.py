@@ -20,6 +20,6 @@ def grove_read():
 if __name__ == '__main__':
     sensor_value = grove_read()
     #humdata_string = 'Humidity value: {0} %'.format(sensor_value)
-    humdata_string = '{},{0}'.format(time_now(), sensor_value)
+    humdata_string = '{},{}'.format(time_now(), sensor_value)
     print(humdata_string)
     sys.exit()
