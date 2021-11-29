@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 
 import sys
-from orchards_time import time_now
+from orchards_time import time_now, date_today, abs_time
+import rsa
+
+TAMPERPROOF = False
+GPS = [42.514419, -76.467538]
+DIFF_GPS = [42.444125, -76.462797]
+OLD_TIME = '18:8:49'
 
 
 def gpio_read():
@@ -35,6 +41,19 @@ def gpio_read():
         raise error
 
 
+def signed_read():
+    (pubkey, privkey) = rsa.newkeys(512)
+    data = grove_read()
+    gps = GPS  # DIFF_GPS #
+    time = time_now()  # 'OLD_TIME  #
+    value = '{},{},{},{}'.format(data, gps[0], gps[1], time)
+    message = value.encode()
+    signature = rsa.sign(message, privkey, 'SHA-1')
+    # value = '{},{},{},{}'.format(28.5, gps[0], gps[1], time)
+    # message = value.encode()
+    return message, pubkey, signature
+
+
 def grove_read():
     from bme_280_sensor import readBME280All
 
@@ -48,8 +67,34 @@ def grove_read():
         return temperature
 
 
+def signed_verify(message, key, sign, old_time):
+    verified = rsa.verify(message, sign, key)
+    if verified:
+        values = message.decode().split(',')
+        print(values)
+        if not (float(values[1]) == float(GPS[0]) and float(values[2]) == float(GPS[1])):
+            return values[0], False
+        now = abs_time(date_today(), time_now())
+        read = abs_time(date_today(), values[3])
+        prior = abs_time(date_today(), old_time)
+        if not (read <= now and read > prior):
+            return values[0], False
+        print(values[0])
+        return values[0], True
+    else:
+        return 0, False
+
+
 if __name__ == '__main__':
-    sensor_value = grove_read()
+    if TAMPERPROOF:
+        old_time = OLD_TIME
+        message, key, sign = signed_read()
+        sensor_value, verified = signed_verify(message, key, sign, old_time)
+        if not verified:
+            print('Data failed to verify!')
+            sys.exit(-1)
+    else:
+        sensor_value = grove_read()
     #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
     tempdata_string = '{},{}'.format(time_now(), sensor_value)
     print(tempdata_string)
