@@ -4,11 +4,10 @@ import sys
 from orchards_time import time_now, date_today, abs_time
 import rsa
 import time
+from gps_sensor import gps_read, diff_read
 
 TAMPERPROOF = False
 EXAGGERATE = False
-GPS = [42.514419, -76.467538]
-DIFF_GPS = [42.444125, -76.462797]
 OLD_TIME = '18:8:49'
 
 
@@ -46,7 +45,7 @@ def gpio_read():
 def signed_read():
     (pubkey, privkey) = rsa.newkeys(512)
     data = grove_read()
-    gps = GPS  # DIFF_GPS #
+    gps = gps_read()  # diff_read() #
     time = time_now()  # 'OLD_TIME  #
     value = '{},{},{},{}'.format(data, gps[0], gps[1], time)
     message = value.encode()

@@ -8,12 +8,16 @@ DIFF_GPS = [42.444125, -76.462797]
 # https://learn.adafruit.com/adafruit-ultimate-gps/circuitpython-parsing
 
 
-def grove_read():
+def gps_read():
     return GPS
 
 
 def diff_read():
     return DIFF_GPS
+
+
+def grove_read():
+    return gps_read()
 
 
 if __name__ == '__main__':
