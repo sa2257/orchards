@@ -2,6 +2,9 @@
 
 import sys
 from orchards_time import time_now
+import time
+
+EXAGGERATE = False
 
 
 def grove_read():
@@ -18,8 +21,15 @@ def grove_read():
 
 
 if __name__ == '__main__':
-    sensor_value = grove_read()
-    #humdata_string = 'Humidity value: {0} %'.format(sensor_value)
-    humdata_string = '{},{}'.format(time_now(), sensor_value)
-    print(humdata_string)
-    sys.exit()
+    if EXAGGERATE:
+        while True:
+            sensor_value = grove_read()
+            humdata_string = 'Humidity value: {0} %'.format(sensor_value)
+            print(humdata_string)
+            time.sleep(0.1)
+    else:
+        sensor_value = grove_read()
+        #humdata_string = 'Humidity value: {0} %'.format(sensor_value)
+        humdata_string = '{},{}'.format(time_now(), sensor_value)
+        print(humdata_string)
+        sys.exit()

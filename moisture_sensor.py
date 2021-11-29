@@ -2,7 +2,10 @@
 
 import sys
 from orchards_time import time_now
+import time
 # https://en.wikipedia.org/wiki/Water_content#Soil_moisture_measurement sunction pressure
+
+EXAGGERATE = False
 
 
 def grove_read():
@@ -20,8 +23,16 @@ def grove_read():
 
 
 if __name__ == '__main__':
-    sensor_value = grove_read()
-    #moistdata_string = 'Moisture value: {0} (-)kPa'.format(sensor_value)
-    moistdata_string = '{},{}'.format(time_now(), sensor_value)
-    print(moistdata_string)
-    sys.exit()
+    if EXAGGERATE:
+        while True:
+            sensor_value = grove_read()
+            moistdata_string = 'Moisture value: {0} (-)kPa'.format(
+                sensor_value)
+            print(moistdata_string)
+            time.sleep(0.01)
+    else:
+        sensor_value = grove_read()
+        #moistdata_string = 'Moisture value: {0} (-)kPa'.format(sensor_value)
+        moistdata_string = '{},{}'.format(time_now(), sensor_value)
+        print(moistdata_string)
+        sys.exit()

@@ -4,6 +4,10 @@ import sys
 from orchards_time import time_now
 # https://www.seeedstudio.com/blog/2020/01/08/what-is-a-light-sensor-types-uses-arduino-guide/
 # https://docs.microsoft.com/en-us/windows/win32/sensorsapi/understanding-and-interpreting-lux-values
+import time
+import stress
+
+EXAGGERATE = False
 
 
 def grove_read():
@@ -21,8 +25,17 @@ def grove_read():
 
 
 if __name__ == '__main__':
-    sensor_value = grove_read()
-    lightdata_string = 'Light value: {0} lux'.format(sensor_value)
-    lightdata_string = '{},{}'.format(time_now(), sensor_value)
-    print(lightdata_string)
-    sys.exit()
+    if EXAGGERATE:
+        while True:
+            sensor_value = grove_read()
+            stress.stress()
+            lightdata_string = 'Light value: {0} lux'.format(sensor_value)
+            print(lightdata_string)
+            time.sleep(0.1)
+    else:
+        sensor_value = grove_read()
+        stress.stress()
+        # lightdata_string = 'Light value: {0} lux'.format(sensor_value)
+        lightdata_string = '{},{}'.format(time_now(), sensor_value)
+        print(lightdata_string)
+        sys.exit()

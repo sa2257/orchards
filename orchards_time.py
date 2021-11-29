@@ -3,6 +3,8 @@
 import time
 import datetime
 
+EXAGGERATE = False
+
 # Return current date
 
 
@@ -32,5 +34,12 @@ def abs_time(date, time):
 
 # Main function
 if __name__ == "__main__":
-    datetime_string = "Timestamp: {} {}".format(date_today(), time_now())
-    print(datetime_string)
+    if EXAGGERATE:
+        while True:
+            datetime_string = "Timestamp: {} {}".format(
+                date_today(), time_now())
+            print(datetime_string)
+            time.sleep(0.1)
+    else:
+        datetime_string = "Timestamp: {} {}".format(date_today(), time_now())
+        print(datetime_string)

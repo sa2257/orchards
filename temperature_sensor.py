@@ -75,22 +75,31 @@ def signed_verify(message, key, sign, old_time):
         values = message.decode().split(',')
         print(values)
         if not (float(values[1]) == float(GPS[0]) and float(values[2]) == float(GPS[1])):
-            return values[0], False
+            return values[0], False, 0
         now = abs_time(date_today(), time_now())
         read = abs_time(date_today(), values[3])
         prior = abs_time(date_today(), old_time)
         if not (read <= now and read > prior):
-            return values[0], False
+            return values[0], False, 0
         print(values[0])
-        return values[0], True
+        return values[0], True, values[3]
     else:
-        return 0, False
+        return 0, False, 0
 
 
 if __name__ == '__main__':
     if EXAGGERATE:
+        old_time = OLD_TIME
         while True:
-            sensor_value = grove_read()
+            if TAMPERPROOF:
+                message, key, sign = signed_read()
+                sensor_value, verified, old_time = signed_verify(
+                    message, key, sign, old_time)
+                if not verified:
+                    print('Data failed to verify!')
+                    continue
+            else:
+                sensor_value = grove_read()
             tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
             print(tempdata_string)
             time.sleep(0.1)
