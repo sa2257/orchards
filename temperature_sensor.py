@@ -3,8 +3,10 @@
 import sys
 from orchards_time import time_now, date_today, abs_time
 import rsa
+import time
 
 TAMPERPROOF = False
+EXAGGERATE = False
 GPS = [42.514419, -76.467538]
 DIFF_GPS = [42.444125, -76.462797]
 OLD_TIME = '18:8:49'
@@ -86,16 +88,24 @@ def signed_verify(message, key, sign, old_time):
 
 
 if __name__ == '__main__':
-    if TAMPERPROOF:
-        old_time = OLD_TIME
-        message, key, sign = signed_read()
-        sensor_value, verified = signed_verify(message, key, sign, old_time)
-        if not verified:
-            print('Data failed to verify!')
-            sys.exit(-1)
+    if EXAGGERATE:
+        while True:
+            sensor_value = grove_read()
+            tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
+            print(tempdata_string)
+            time.sleep(0.1)
     else:
-        sensor_value = grove_read()
-    #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
-    tempdata_string = '{},{}'.format(time_now(), sensor_value)
-    print(tempdata_string)
-    sys.exit()
+        if TAMPERPROOF:
+            old_time = OLD_TIME
+            message, key, sign = signed_read()
+            sensor_value, verified = signed_verify(
+                message, key, sign, old_time)
+            if not verified:
+                print('Data failed to verify!')
+                sys.exit(-1)
+        else:
+            sensor_value = grove_read()
+        #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
+        tempdata_string = '{},{}'.format(time_now(), sensor_value)
+        print(tempdata_string)
+        sys.exit()
