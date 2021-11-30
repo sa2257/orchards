@@ -6,7 +6,7 @@ import rsa
 import time
 from gps_sensor import gps_read, diff_read
 
-TAMPERPROOF = False
+TAMPERPROOF = True
 EXAGGERATE = False
 OLD_TIME = '18:8:49'
 
@@ -73,7 +73,7 @@ def signed_verify(message, key, sign, old_time):
     verified = rsa.verify(message, sign, key)
     if verified:
         values = message.decode().split(',')
-        print(values)
+        #print(values)
         if not (float(values[1]) == float(GPS[0]) and float(values[2]) == float(GPS[1])):
             return values[0], False, old_time
         now = abs_time(date_today(), time_now())
@@ -81,7 +81,7 @@ def signed_verify(message, key, sign, old_time):
         prior = abs_time(date_today(), old_time)
         if not (read <= now and read > prior):
             return values[0], False, old_time
-        print(values[0])
+        #print(values[0])
         return values[0], True, values[3]
     else:
         return 0, False, old_time
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         if TAMPERPROOF:
             old_time = OLD_TIME
             message, key, sign = signed_read()
-            sensor_value, verified = signed_verify(
+            sensor_value, verified, old_time = signed_verify(
                 message, key, sign, old_time)
             if not verified:
                 print('Data failed to verify!')

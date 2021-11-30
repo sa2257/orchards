@@ -16,6 +16,7 @@ cron = CronTab(user=True)
 
 # create commands
 local_python = 'python'
+super_python = 'python3'
 sensor_list = ['light', 'moist', 'temp', 'hum', 'pres']
 
 
@@ -118,7 +119,7 @@ def create_commands():
     script_name = 'temperature_sensor.py'
     datadir = 'data_today'
     datalog = 'tempdata.log'
-    command = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+    command = '{} {}/{} >> {}/{}/{}'.format(super_python, os.getcwd(),
                                             script_name, os.getcwd(), datadir, datalog)
     sense.append(command)
 
