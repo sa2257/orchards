@@ -69,21 +69,22 @@ def grove_read():
 
 
 def signed_verify(message, key, sign, old_time):
+    GPS  = gps_read()
     verified = rsa.verify(message, sign, key)
     if verified:
         values = message.decode().split(',')
         print(values)
         if not (float(values[1]) == float(GPS[0]) and float(values[2]) == float(GPS[1])):
-            return values[0], False, 0
+            return values[0], False, old_time
         now = abs_time(date_today(), time_now())
         read = abs_time(date_today(), values[3])
         prior = abs_time(date_today(), old_time)
         if not (read <= now and read > prior):
-            return values[0], False, 0
+            return values[0], False, old_time
         print(values[0])
         return values[0], True, values[3]
     else:
-        return 0, False, 0
+        return 0, False, old_time
 
 
 if __name__ == '__main__':
