@@ -5,7 +5,7 @@ import os
 import sys
 from crontab import CronTab
 # https://pypi.org/project/python-crontab/
-from sentinel_monitor import monitor_liveness
+from sentinel_monitor import monitor_liveness, check_diffness
 
 # Creating an object from the class
 # Using the root user
@@ -17,7 +17,7 @@ cron = CronTab(user=True)
 # create commands
 local_python = 'python'
 super_python = 'python3'
-sensor_list = ['light', 'moist', 'temp', 'hum', 'pres']
+sensor_list = ['light', 'moist', 'temp', 'hum', 'pres', 'gps', 'co2']
 
 
 def remove_command(command):
@@ -133,6 +133,20 @@ def create_commands():
     script_name = 'pressure_sensor.py'
     datadir = 'data_today'
     datalog = 'presdata.log'
+    command = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                            script_name, os.getcwd(), datadir, datalog)
+    sense.append(command)
+
+    script_name = 'gps_sensor.py'
+    datadir = 'data_today'
+    datalog = 'gpsdata.log'
+    command = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
+                                            script_name, os.getcwd(), datadir, datalog)
+    sense.append(command)
+
+    script_name = 'co2_sensor.py'
+    datadir = 'data_today'
+    datalog = 'co2data.log'
     command = '{} {}/{} >> {}/{}/{}'.format(local_python, os.getcwd(),
                                             script_name, os.getcwd(), datadir, datalog)
     sense.append(command)
