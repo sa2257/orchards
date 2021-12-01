@@ -16,7 +16,7 @@ def grove_read():
         return -1
     else:
         #print('Detecting CO2...')
-        return sensor.light
+        return -1 #sensor.light
 
 
 def grove_read_mean(times):

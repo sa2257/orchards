@@ -38,11 +38,11 @@ def grove_read():
 
 
 def grove_read_mean(times):
-    sum = 0
+    gps_first = grove_read()
     for i in range(times):
-        sum += grove_read()
+        gps_drop = grove_read()
         time.sleep(0.1)
-    return sum/times
+    return gps_first
 
 
 if __name__ == '__main__':

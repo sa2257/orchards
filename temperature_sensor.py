@@ -8,7 +8,7 @@ from gps_sensor import gps_read, diff_read
 
 TAMPERPROOF = True
 EXAGGERATE = False
-OLD_TIME = '18:8:49'
+OLD_TIME = '18:0:0'
 
 
 def gpio_read():

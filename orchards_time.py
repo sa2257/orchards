@@ -50,5 +50,5 @@ if __name__ == "__main__":
             time.sleep(0.1)
     else:
         datetime_string = "Timestamp: {} {}".format(
-            date_today(), time_read())  # time_now())
+            date_today(), time_read(100))  # time_now())
         print(datetime_string)
