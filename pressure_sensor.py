@@ -20,6 +20,14 @@ def grove_read():
         return pressure
 
 
+def grove_read_mean(times):
+    sum = 0
+    for i in range(times):
+        sum += grove_read()
+        time.sleep(0.1)
+    return sum/times
+
+
 if __name__ == '__main__':
     if EXAGGERATE:
         while True:
@@ -28,7 +36,7 @@ if __name__ == '__main__':
             print(presdata_string)
             time.sleep(0.1)
     else:
-        sensor_value = grove_read()
+        sensor_value = grove_read_mean(100)
         #presdata_string = 'Pressure value: {0} hPa'.format(sensor_value)
         presdata_string = '{},{}'.format(time_now(), sensor_value)
         print(presdata_string)

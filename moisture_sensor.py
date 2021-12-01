@@ -33,7 +33,7 @@ def grove_read_mean(times):
 if __name__ == '__main__':
     if EXAGGERATE:
         while True:
-            sensor_value = grove_read()
+            sensor_value = grove_read_mean(100)
             moistdata_string = 'Moisture value: {0} (-)kPa'.format(
                 sensor_value)
             print(moistdata_string)

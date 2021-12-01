@@ -12,14 +12,18 @@ bench,hours,volts,amps,mAh
 6,1,4.98,0.20,221
 7,1,4.99,0.23,235 # sensor and -1 for extra hardware power drain
 #8,1,4.97,0.18,211 # restarted half way
+8,1,5.02,0.44,351
 
 ## policy test
 1,1,4.98,0.20,204
 1,1,4.99,0.20,209
 
 ## sampling rate test
-3,1/1000
+3,1,4.99,0.28,267 # 1/1000
 3,1,4.99,0.26,255 # 1/100
 3,1,4.99,0.26,220 # 1/10
 3,1,4.97,0.20,209 # 1
 3,1,4.98,0.20,206 # 60
+
+## Tricks to emphasize
+3,1,4.99,0.20,221 # mean and 60

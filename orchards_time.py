@@ -32,6 +32,14 @@ def abs_time(date, time):
     return abs_days * 24 * 3600 + abs_secs
 
 
+def time_read(times):
+    time_first = time_now()
+    for i in range(times):
+        time_drop = time_now()
+        time.sleep(0.1)
+    return time_first
+
+
 # Main function
 if __name__ == "__main__":
     if EXAGGERATE:
@@ -41,5 +49,6 @@ if __name__ == "__main__":
             print(datetime_string)
             time.sleep(0.1)
     else:
-        datetime_string = "Timestamp: {} {}".format(date_today(), time_now())
+        datetime_string = "Timestamp: {} {}".format(
+            date_today(), time_read())  # time_now())
         print(datetime_string)

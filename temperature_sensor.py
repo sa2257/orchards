@@ -42,9 +42,17 @@ def gpio_read():
         raise error
 
 
+def grove_read_mean(times):
+    sum = 0
+    for i in range(times):
+        sum += grove_read()
+        time.sleep(0.1)
+    return sum/times
+
+
 def signed_read():
     (pubkey, privkey) = rsa.newkeys(512)
-    data = grove_read()
+    data = grove_read_mean(100)
     gps = gps_read()  # diff_read() #
     time = time_now()  # 'OLD_TIME  #
     value = '{},{},{},{}'.format(data, gps[0], gps[1], time)
@@ -69,11 +77,11 @@ def grove_read():
 
 
 def signed_verify(message, key, sign, old_time):
-    GPS  = gps_read()
+    GPS = gps_read()
     verified = rsa.verify(message, sign, key)
     if verified:
         values = message.decode().split(',')
-        #print(values)
+        # print(values)
         if not (float(values[1]) == float(GPS[0]) and float(values[2]) == float(GPS[1])):
             return values[0], False, old_time
         now = abs_time(date_today(), time_now())
@@ -81,7 +89,7 @@ def signed_verify(message, key, sign, old_time):
         prior = abs_time(date_today(), old_time)
         if not (read <= now and read > prior):
             return values[0], False, old_time
-        #print(values[0])
+        # print(values[0])
         return values[0], True, values[3]
     else:
         return 0, False, old_time
