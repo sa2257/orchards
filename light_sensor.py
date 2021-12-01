@@ -24,14 +24,22 @@ def grove_read():
         return sensor.light
 
 
+def grove_read_mean(times):
+    sum = 0
+    for i in range(times):
+        sum += grove_read()
+        time.sleep(0.1)
+    return sum/times
+
+
 if __name__ == '__main__':
     if EXAGGERATE:
+        # stress.stress() # Run this without waiting for return
         while True:
-            sensor_value = grove_read()
-            stress.stress()
+            sensor_value = grove_read_mean()
             lightdata_string = 'Light value: {0} lux'.format(sensor_value)
             print(lightdata_string)
-            time.sleep(0.1)
+            time.sleep(60)
     else:
         sensor_value = grove_read()
         stress.stress()
