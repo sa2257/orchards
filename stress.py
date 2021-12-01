@@ -4,7 +4,7 @@ from multiprocessing import Pool
 from multiprocessing import cpu_count
 import signal
 
-stop_loop = 10000
+stop_loop = 10000 # 1
 
 
 def exit_chld(x, y):
@@ -16,7 +16,8 @@ def f(x):
     global stop_loop
     while stop_loop:
         x*x
-        stop_loop -= 1
+        if stop_loop > 0:
+            stop_loop -= 1
 
 
 signal.signal(signal.SIGINT, exit_chld)
@@ -30,3 +31,6 @@ def stress():
     #print('-' * 20)
     pool = Pool(processes)
     pool.map(f, range(processes))
+
+if __name__ == '__main__':
+    stress()
