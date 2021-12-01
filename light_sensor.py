@@ -36,12 +36,12 @@ if __name__ == '__main__':
     if EXAGGERATE:
         # stress.stress() # Run this without waiting for return
         while True:
-            sensor_value = grove_read_mean()
+            sensor_value = grove_read()
             lightdata_string = 'Light value: {0} lux'.format(sensor_value)
             print(lightdata_string)
             time.sleep(60)
     else:
-        sensor_value = grove_read()
+        sensor_value = grove_read_mean(100)
         stress.stress()
         # lightdata_string = 'Light value: {0} lux'.format(sensor_value)
         lightdata_string = '{},{}'.format(time_now(), sensor_value)
