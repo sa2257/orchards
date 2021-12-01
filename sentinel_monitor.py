@@ -142,8 +142,8 @@ def check_diffness(sensor):
     return True
 
 
-def monitor_liveness(sensor, isAble):
-    switch = False
+def monitor_liveness(sensor, isAble, rate):
+    toggle = False
     like = 5  # max check atm is 5 times
     policy = None
     isLive = check_liveness(sensor)
@@ -153,19 +153,48 @@ def monitor_liveness(sensor, isAble):
     if isLive and isAble:
         pass
     elif isLive and not isAble:
-        switch = True
-        # delayed change
-        #like = 0
+        toggle = True
+        if rate == 'delayed':
+            like = 0
     elif not isLive and isAble:
-        # simple policy
-        #switch = True
-        # delayed change
-        #switch = change_status(wasLive, wasLike)
-        #like += like
-        # gradual change
-        policy, policy_in_min = new_policy(wasRead)
+        if rate == 'simple':
+            toggle = True
+        elif rate == 'delayed':
+            toggle = change_status(wasLive, wasLike)
+            like += like
+        else:  # 'gradual'
+            policy, policy_in_min = new_policy(wasRead)
     else:
         pass
 
-    write_to_history(sensor, isLive ^ switch, None, like, policy_in_min)
-    return switch, policy
+    write_to_history(sensor, isLive ^ toggle, None, like, policy_in_min)
+    return toggle, policy
+
+
+def monitor_diffness(sensor, isAble, rate):
+    toggle = False
+    like = 5  # max check atm is 5 times
+    policy = None
+    isDiff = check_diffness(sensor)
+    wasLive, wasDiff, wasLike, wasRead = read_history(sensor)
+    policy_in_min = 1 if wasRead is None else wasRead
+
+    if isDiff and isAble:
+        pass
+    elif isDiff and not isAble:
+        toggle = True
+        if rate == 'delayed':
+            like = 0
+    elif not isDiff and isAble:
+        if rate == 'simple':
+            toggle = True
+        elif rate == 'delayed':
+            toggle = change_status(wasDiff, wasLike)
+            like += like
+        else:  # 'gradual'
+            policy, policy_in_min = new_policy(wasRead)
+    else:
+        pass
+
+    write_to_history(sensor, isDiff ^ toggle, None, like, policy_in_min)
+    return toggle, policy

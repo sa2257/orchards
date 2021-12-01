@@ -5,7 +5,7 @@ import os
 import sys
 from crontab import CronTab
 # https://pypi.org/project/python-crontab/
-from sentinel_monitor import monitor_liveness, check_diffness
+from sentinel_monitor import check_liveness, monitor_liveness, check_diffness, monitor_diffness
 
 # Creating an object from the class
 # Using the root user
@@ -191,10 +191,20 @@ def run_aware(option):
     boot, heart, sense = create_commands()
 
     for i, each in enumerate(sensor_list):
-        if check_diffness(each):
-            enable_command(sense[i])  # need a sophisticated command
+        if option == 0:
+            if check_diffness(each):
+                enable_command(sense[i])  # need a sophisticated command
+            else:
+                disable_command(sense[i])
         else:
-            disable_command(sense[i])
+            isAble = is_Able(sense[i])
+            switch, policy = monitor_diffness(each, isAble)
+            if switch:
+                toggle_command(sense[i])
+            elif policy is not None:
+                reschedule_command(sense[i], policy)
+            else:
+                pass
 
     cron.write()
 
@@ -204,14 +214,20 @@ def run_live(option):
     boot, heart, sense = create_commands()
 
     for i, each in enumerate(sensor_list):
-        isAble = is_Able(sense[i])
-        switch, policy = monitor_liveness(each, isAble)
-        if switch:
-            toggle_command(sense[i])
-        elif policy is not None:
-            reschedule_command(sense[i], policy)
+        if option == 0:
+            if check_liveness(each):
+                enable_command(sense[i])  # need a sophisticated command
+            else:
+                disable_command(sense[i])
         else:
-            pass
+            isAble = is_Able(sense[i])
+            switch, policy = monitor_liveness(each, isAble)
+            if switch:
+                toggle_command(sense[i])
+            elif policy is not None:
+                reschedule_command(sense[i], policy)
+            else:
+                pass
 
     cron.write()
 
