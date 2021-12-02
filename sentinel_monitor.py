@@ -2,25 +2,31 @@
 import csv
 import os
 
-sensor_list = ['time', 'light', 'moist', 'temp', 'hum', 'pres']
-dir_name = 'SA01-2021-11-21'
+sensor_list = ['time', 'light', 'moist', 'temp', 'hum', 'pres', 'gps', 'co2']
+dir_name = 'SA01-2021-12-31'
 file_list = ['timestamp.log', 'lightdata.log',
-             'moistdata.log', 'tempdata.log', 'humdata.log', 'presdata.log']
-live_list = ['time', -1, -1, -1,  -1, -1]
-diff_list = [0, 0, 0, 0, 0, 0]
+             'moistdata.log', 'tempdata.log', 'humdata.log', 'presdata.log', 'gpsdata.log', 'co2data.log']
+live_list = ['time', -1, -1, -1, -1, -1, -1, -1]
+diff_list = [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.00001, 0.001]
 history_file = 'sentinel.csv'
 
 
 def read_data(datafile):
     datapath = '{}/{}'.format(dir_name, datafile)
-    print(datapath)
+    #print(datapath)
     with open(datapath, 'r') as f:
         rows = csv.reader(f)
         data = []
+        data_extra = []
         for row in rows:  # reversed didn't work, no did len
             data.append(float(row[1]))
+            if len(row) > 2:
+                data_extra.append(float(row[2]))
         try:
             avg = sum(data) / len(data)
+            if len(data_extra) > 1: # this is a very weak logic
+                avg_extra = sum(data_extra) / len(data_extra)
+                avg = (avg + avg_extra) / 2
         except:
             return None
         return avg
@@ -30,9 +36,14 @@ def read_item(datafile):
     datapath = '{}/{}'.format(dir_name, datafile)
     with open(datapath, 'r') as f:
         rows = csv.reader(f)
-        data = 0
+        data = None
+        data_extra = None
         for row in rows:
             data = float(row[1])  # len and [][] didn't work
+            if len(row) > 2:
+                data_extra = float(row[2])
+        if data_extra is not None: # this is a very weak logic
+            data = (data + data_extra) / 2
         return data
 
 
@@ -137,7 +148,7 @@ def check_diffness(sensor):
     i = sensor_list.index(sensor)
     past = read_data(file_list[i])
     last = read_item(file_list[i])
-    if past * (1 - diff_list[i]) < last < past * (1 + diff_list[i]):
+    if abs(past * (1 - diff_list[i])) <= abs(last) <= abs(past * (1 + diff_list[i])):
         return False
     return True
 

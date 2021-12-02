@@ -192,6 +192,7 @@ def run_aware(option):
 
     for i, each in enumerate(sensor_list):
         if option == 0:
+            print(each, ': ', check_diffness(each))
             if check_diffness(each):
                 enable_command(sense[i])  # need a sophisticated command
             else:
@@ -215,6 +216,7 @@ def run_live(option):
 
     for i, each in enumerate(sensor_list):
         if option == 0:
+            print(each, ': ', check_liveness(each))
             if check_liveness(each):
                 enable_command(sense[i])  # need a sophisticated command
             else:
