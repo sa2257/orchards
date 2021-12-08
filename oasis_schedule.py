@@ -7,6 +7,10 @@ from crontab import CronTab
 # https://pypi.org/project/python-crontab/
 from sentinel_monitor import check_liveness, monitor_liveness, check_diffness, monitor_diffness
 
+# settings
+# SEC_HW = 0  # 0 is running without OP-TEE, 1 is with
+# SEC_TA = 0  # 0 is using common, 1 is using unique
+
 # Creating an object from the class
 # Using the root user
 # cron = CronTab(user="pi")
@@ -238,23 +242,38 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Schedule tasks in DA node')
-    parser.add_argument('--mode', metavar='string', required=True,
-                        help='mode options are orchards, liveonly and aware')
-    parser.add_argument('--option', metavar='string', required=True,
-                        help='options are none, lifebeat, heartbeat and sense')
+    parser.add_argument('--sch', metavar='string', required=True,
+                        help='schedule options are orchards, live and aware')
+    parser.add_argument('--sel', metavar='string', required=True,
+                        help='select options are none, lifebeat, heartbeat and sense')
+    # parser.add_argument('--sec', metavar='string', required=True,
+    #                     help='secure options are none, all, heartbeat and select')
     args = parser.parse_args()
+
     option = 0
-    if(args.option == 'sense'):
+    # which sensors are used
+    if(args.sel == 'sense'):
         option = 2
-    elif(args.option == 'none'):
+    elif(args.sel == 'none'):
         option = -1
-    elif(args.option == 'heartbeat'):
+    elif(args.sel == 'heartbeat'):
         option = 1
     else:  # 'lifebeat'
         option = 0
-    if(args.mode == 'aware'):
+    # secure = 0
+    # which sensors need protecting
+    # if(args.sec == 'select'):
+    #     secure = 2
+    # elif(args.sec == 'none'):
+    #     secure = -1
+    # elif(args.sec == 'heartbeat'):
+    #     secure = 1
+    # else:  # 'lifebeat'
+    #     secure = 0
+
+    if(args.sch == 'aware'):
         run_aware(option)
-    elif(args.mode == 'liveonly'):
+    elif(args.sch == 'liveonly'):
         run_live(option)
     else:  # 'orchards'
         run_orchards(option)
