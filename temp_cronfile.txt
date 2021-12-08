@@ -1,0 +1,8 @@
+@reboot echo "--------" >> /home/pi/orchards/data_today/timestamp.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/lightdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/moistdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/tempdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/humdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/presdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/gpsdata.log
+@reboot echo "--------" >> /home/pi/orchards/data_today/co2data.log
