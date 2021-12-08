@@ -62,7 +62,7 @@ if __name__ == '__main__':
     else:
         sensor_value = grove_read_mean(100)
         if SECURITY:
-            os.system('sudo optee_example_sign_sensor')
+            os.system('sudo timeout 5s optee_example_sign_sensor')
         gpsdata_string = '{},{}:{}'.format(
             time_now(), sensor_value[0], sensor_value[1])
         print(gpsdata_string)

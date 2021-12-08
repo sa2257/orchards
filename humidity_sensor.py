@@ -40,7 +40,7 @@ if __name__ == '__main__':
     else:
         sensor_value = grove_read_mean(100)
         if SECURITY:
-            os.system('sudo optee_example_sign_sensor')
+            os.system('sudo timeout 5s optee_example_sign_sensor')
         #humdata_string = 'Humidity value: {0} %'.format(sensor_value)
         humdata_string = '{},{}'.format(time_now(), sensor_value)
         print(humdata_string)

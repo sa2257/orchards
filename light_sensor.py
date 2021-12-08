@@ -46,7 +46,7 @@ if __name__ == '__main__':
         sensor_value = grove_read_mean(100)
         stress.stress()
         if SECURITY:
-            os.system('sudo optee_example_sign_sensor')
+            os.system('sudo timeout 5s optee_example_sign_sensor')
         # lightdata_string = 'Light value: {0} lux'.format(sensor_value)
         lightdata_string = '{},{}'.format(time_now(), sensor_value)
         print(lightdata_string)

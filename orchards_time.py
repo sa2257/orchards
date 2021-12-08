@@ -52,7 +52,7 @@ if __name__ == "__main__":
             time.sleep(0.1)
     else:
         if SECURITY:
-            os.system('sudo optee_example_sign_sensor')
+            os.system('sudo timeout 5s optee_example_sign_sensor')
         datetime_string = "Timestamp: {} {}".format(
             date_today(), time_read(100))  # time_now())
         print(datetime_string)

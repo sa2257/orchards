@@ -45,10 +45,10 @@ def gpio_read():
 
 
 def grove_read():
-    from bme_280_sensor import readBME280All
+    #from bme_280_sensor import readBME280All
 
     try:
-        temperature, pressure, humidity = readBME280All()
+        temperature, pressure, humidity = 25, 50000, 50  # readBME280All()
     except:
         #print('Error finding temperature sensor!')
         return -1
@@ -131,15 +131,17 @@ if __name__ == '__main__':
         if TAMPERPROOF:
             old_time = OLD_TIME
             message, key, sign = signed_read()
+            print(sys.getsizeof(message), ':', sys.getsizeof(sign))
             sensor_value, verified, old_time = signed_verify(
                 message, key, sign, old_time)
             if not verified:
                 print('Data failed to verify!')
                 sys.exit(-1)
+            print(sys.getsizeof(sensor_value))
         else:
             sensor_value = grove_read_mean(100)
         if SECURITY:
-            os.system('sudo optee_example_loct_sensor')
+            os.system('sudo timeout 5s optee_example_loct_sensor')
         #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
         tempdata_string = '{},{}'.format(time_now(), sensor_value)
         print(tempdata_string)
