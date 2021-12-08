@@ -242,9 +242,9 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Schedule tasks in DA node')
-    parser.add_argument('--sch', metavar='string', required=True,
-                        help='schedule options are orchards, live and aware')
-    parser.add_argument('--sel', metavar='string', required=True,
+    parser.add_argument('--mode', metavar='string', required=True,
+                        help='schedule options are orchards, liveonly and aware')
+    parser.add_argument('--option', metavar='string', required=True,
                         help='select options are none, lifebeat, heartbeat and sense')
     # parser.add_argument('--sec', metavar='string', required=True,
     #                     help='secure options are none, all, heartbeat and select')
@@ -252,11 +252,11 @@ if __name__ == '__main__':
 
     option = 0
     # which sensors are used
-    if(args.sel == 'sense'):
+    if(args.option == 'sense'):
         option = 2
-    elif(args.sel == 'none'):
+    elif(args.option == 'none'):
         option = -1
-    elif(args.sel == 'heartbeat'):
+    elif(args.option == 'heartbeat'):
         option = 1
     else:  # 'lifebeat'
         option = 0
@@ -271,9 +271,9 @@ if __name__ == '__main__':
     # else:  # 'lifebeat'
     #     secure = 0
 
-    if(args.sch == 'aware'):
+    if(args.mode == 'aware'):
         run_aware(option)
-    elif(args.sch == 'liveonly'):
+    elif(args.mode == 'liveonly'):
         run_live(option)
     else:  # 'orchards'
         run_orchards(option)
