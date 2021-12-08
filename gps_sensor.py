@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from orchards_time import time_now
 import time
 
 EXAGGERATE = False
+SECURITY = False
 GPS = [42.514419, -76.467538]
 DIFF_GPS = [42.444125, -76.462797]
 # https://learn.adafruit.com/adafruit-ultimate-gps/circuitpython-parsing
 
 
 def ultimate_uart():
-    
+
     import serial
     import pynmea2
-    #while True:
+    # while True:
     port = "/dev/ttyAMA0"
     ser = serial.Serial(port, baudrate=9600, timeout=0.5)
     dataout = pynmea2.NMEAStreamReader()
@@ -30,7 +32,7 @@ def ultimate_uart():
 
 def gps_read():
     return GPS
-    #return ultimate_uart()
+    # return ultimate_uart()
 
 
 def diff_read():
@@ -59,6 +61,8 @@ if __name__ == '__main__':
             time.sleep(0.1)
     else:
         sensor_value = grove_read_mean(100)
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         gpsdata_string = '{},{}:{}'.format(
             time_now(), sensor_value[0], sensor_value[1])
         print(gpsdata_string)

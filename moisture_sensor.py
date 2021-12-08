@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from orchards_time import time_now
 import time
 # https://en.wikipedia.org/wiki/Water_content#Soil_moisture_measurement sunction pressure
 
 EXAGGERATE = False
+SECURITY = False
 
 
 def grove_read():
@@ -40,6 +42,8 @@ if __name__ == '__main__':
             time.sleep(55)
     else:
         sensor_value = grove_read_mean(100)
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         #moistdata_string = 'Moisture value: {0} (-)kPa'.format(sensor_value)
         moistdata_string = '{},{}'.format(time_now(), sensor_value)
         print(moistdata_string)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from orchards_time import time_now
 # https://www.seeedstudio.com/blog/2020/01/08/what-is-a-light-sensor-types-uses-arduino-guide/
 # https://docs.microsoft.com/en-us/windows/win32/sensorsapi/understanding-and-interpreting-lux-values
@@ -8,6 +9,7 @@ import time
 import stress
 
 EXAGGERATE = False
+SECURITY = False
 
 
 def grove_read():
@@ -43,6 +45,8 @@ if __name__ == '__main__':
     else:
         sensor_value = grove_read_mean(100)
         stress.stress()
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         # lightdata_string = 'Light value: {0} lux'.format(sensor_value)
         lightdata_string = '{},{}'.format(time_now(), sensor_value)
         print(lightdata_string)

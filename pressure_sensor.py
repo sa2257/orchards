@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from orchards_time import time_now
 import time
 
 EXAGGERATE = False
+SECURITY = False
 
 
 def grove_read():
@@ -37,6 +39,8 @@ if __name__ == '__main__':
             time.sleep(0.1)
     else:
         sensor_value = grove_read_mean(100)
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         #presdata_string = 'Pressure value: {0} hPa'.format(sensor_value)
         presdata_string = '{},{}'.format(time_now(), sensor_value)
         print(presdata_string)

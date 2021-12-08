@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from orchards_time import time_now, date_today, abs_time
 import rsa
 import time
@@ -8,6 +9,7 @@ from gps_sensor import gps_read, diff_read
 
 TAMPERPROOF = True
 EXAGGERATE = False
+SECURITY = False
 OLD_TIME = '1:0:0'
 
 
@@ -136,6 +138,8 @@ if __name__ == '__main__':
                 sys.exit(-1)
         else:
             sensor_value = grove_read_mean(100)
+        if SECURITY:
+            os.system('sudo optee_example_loct_sensor')
         #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
         tempdata_string = '{},{}'.format(time_now(), sensor_value)
         print(tempdata_string)

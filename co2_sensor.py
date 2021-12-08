@@ -1,8 +1,10 @@
 import sys
+import os
 from orchards_time import time_now
 import time
 
 EXAGGERATE = False
+SECURITY = False
 
 
 def grove_read():
@@ -16,7 +18,7 @@ def grove_read():
         return -1
     else:
         #print('Detecting CO2...')
-        return -1 #sensor.light
+        return -1  # sensor.light
 
 
 def grove_read_mean(times):
@@ -36,6 +38,8 @@ if __name__ == '__main__':
             time.sleep(0.1)
     else:
         sensor_value = grove_read_mean(100)
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         co2data_string = '{},{}'.format(time_now(), sensor_value)
         print(co2data_string)
         sys.exit()

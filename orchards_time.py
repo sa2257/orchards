@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
+import os
 import time
 import datetime
 
 EXAGGERATE = False
+SECURITY = False
 
 # Return current date
 
@@ -49,6 +51,8 @@ if __name__ == "__main__":
             print(datetime_string)
             time.sleep(0.1)
     else:
+        if SECURITY:
+            os.system('sudo optee_example_sign_sensor')
         datetime_string = "Timestamp: {} {}".format(
             date_today(), time_read(100))  # time_now())
         print(datetime_string)
