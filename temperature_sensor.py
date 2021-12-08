@@ -42,6 +42,19 @@ def gpio_read():
         raise error
 
 
+def grove_read():
+    from bme_280_sensor import readBME280All
+
+    try:
+        temperature, pressure, humidity = readBME280All()
+    except:
+        #print('Error finding temperature sensor!')
+        return -1
+    else:
+        #print('Detecting temperature...')
+        return temperature
+
+
 def grove_read_mean(times):
     sum = 0
     for i in range(times):
@@ -50,8 +63,19 @@ def grove_read_mean(times):
     return sum/times
 
 
+def oldkeys():
+    with open('private.pem', mode='rb') as privatefile:
+        keydata = privatefile.read()
+    privkey = rsa.PrivateKey.load_pkcs1(keydata)
+    with open('public.pem', mode='rb') as publicfile:
+        keydata = publicfile.read()
+    pubkey = rsa.PublicKey.load_pkcs1(keydata)
+
+    return pubkey, privkey
+
+
 def signed_read():
-    (pubkey, privkey) = rsa.newkeys(512)
+    (pubkey, privkey) = oldkeys()  # rsa.newkeys(512)
     if EXAGGERATE:
         data = grove_read()
     else:
@@ -64,19 +88,6 @@ def signed_read():
     # value = '{},{},{},{}'.format(28.5, gps[0], gps[1], time)
     # message = value.encode()
     return message, pubkey, signature
-
-
-def grove_read():
-    from bme_280_sensor import readBME280All
-
-    try:
-        temperature, pressure, humidity = readBME280All()
-    except:
-        #print('Error finding temperature sensor!')
-        return -1
-    else:
-        #print('Detecting temperature...')
-        return temperature
 
 
 def signed_verify(message, key, sign, old_time):
