@@ -24,9 +24,9 @@ def grove_read():
 
 def grove_read_mean(times):
     sum = 0
-    for i in range(times):
+    for i in range(times*10):
         sum += grove_read()
-        time.sleep(0.1)
+        time.sleep(0.01)
     return sum/times
 
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             print(moistdata_string)
             time.sleep(55)
     else:
-        sensor_value = grove_read()
+        sensor_value = grove_read_mean(100)
         #moistdata_string = 'Moisture value: {0} (-)kPa'.format(sensor_value)
         moistdata_string = '{},{}'.format(time_now(), sensor_value)
         print(moistdata_string)

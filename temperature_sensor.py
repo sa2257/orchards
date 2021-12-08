@@ -8,7 +8,7 @@ from gps_sensor import gps_read, diff_read
 
 TAMPERPROOF = True
 EXAGGERATE = False
-OLD_TIME = '18:0:0'
+OLD_TIME = '1:0:0'
 
 
 def gpio_read():
@@ -52,7 +52,10 @@ def grove_read_mean(times):
 
 def signed_read():
     (pubkey, privkey) = rsa.newkeys(512)
-    data = grove_read_mean(100)
+    if EXAGGERATE:
+        data = grove_read()
+    else:
+        data = grove_read_mean(100)
     gps = gps_read()  # diff_read() #
     time = time_now()  # 'OLD_TIME  #
     value = '{},{},{},{}'.format(data, gps[0], gps[1], time)
@@ -121,7 +124,7 @@ if __name__ == '__main__':
                 print('Data failed to verify!')
                 sys.exit(-1)
         else:
-            sensor_value = grove_read()
+            sensor_value = grove_read_mean(100)
         #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)
         tempdata_string = '{},{}'.format(time_now(), sensor_value)
         print(tempdata_string)
