@@ -61,7 +61,7 @@ def grove_read_mean(times):
     sum = 0
     for i in range(times):
         sum += grove_read()
-        time.sleep(0.1)
+        time.sleep(0.01)
     return sum/times
 
 
@@ -81,7 +81,7 @@ def signed_read():
     if EXAGGERATE:
         data = grove_read()
     else:
-        data = grove_read_mean(100)
+        data = grove_read_mean(6000)
     gps = gps_read()  # diff_read() #
     time = time_now()  # 'OLD_TIME  #
     value = '{},{},{},{}'.format(data, gps[0], gps[1], time)
@@ -139,7 +139,7 @@ if __name__ == '__main__':
                 sys.exit(-1)
             print(sys.getsizeof(sensor_value))
         else:
-            sensor_value = grove_read_mean(100)
+            sensor_value = grove_read_mean(6000)
         if SECURITY:
             os.system('sudo timeout 5s optee_example_loct_sensor')
         #tempdata_string = 'Temperature value: {0} C'.format(sensor_value)

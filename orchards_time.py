@@ -38,7 +38,7 @@ def time_read(times):
     time_first = time_now()
     for i in range(times):
         time_drop = time_now()
-        time.sleep(0.1)
+        time.sleep(0.01)
     return time_first
 
 
@@ -54,5 +54,5 @@ if __name__ == "__main__":
         if SECURITY:
             os.system('sudo timeout 5s optee_example_sign_sensor')
         datetime_string = "Timestamp: {} {}".format(
-            date_today(), time_read(100))  # time_now())
+            date_today(), time_read(6000))  # time_now())
         print(datetime_string)

@@ -47,7 +47,7 @@ def grove_read_mean(times):
     gps_first = grove_read()
     for i in range(times):
         gps_drop = grove_read()
-        time.sleep(0.1)
+        time.sleep(0.01)
     return gps_first
 
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             print(gpsdata_string)
             time.sleep(0.1)
     else:
-        sensor_value = grove_read_mean(100)
+        sensor_value = grove_read_mean(6000)
         if SECURITY:
             os.system('sudo timeout 5s optee_example_sign_sensor')
         gpsdata_string = '{},{}:{}'.format(

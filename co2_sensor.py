@@ -25,7 +25,7 @@ def grove_read_mean(times):
     sum = 0
     for i in range(times):
         sum += grove_read()
-        time.sleep(0.1)
+        time.sleep(0.01)
     return sum/times
 
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             print(co2data_string)
             time.sleep(0.1)
     else:
-        sensor_value = grove_read_mean(100)
+        sensor_value = grove_read_mean(6000)
         if SECURITY:
             os.system('sudo timeout 5s optee_example_sign_sensor')
         co2data_string = '{},{}'.format(time_now(), sensor_value)
